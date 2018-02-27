@@ -7,12 +7,19 @@
 </head>
 <body>
     <div id="app">
+        <!-- Hover Title -->
         <p v-bind:title="hoverTitle">
             Hover your mouse over me for a few seconds to see my dynamically bound title!
         </p>
 
-        <p v-if="seen">Now you see me</p>
+        <hr>
 
+        <!-- v-if example -->
+        <p v-if="seen">Conditional text, run "app.seen = false" in the console to hide it.</p>
+
+        <hr>
+
+        <!-- v-for example -->
         <div>
             <ol>
                 <li v-for="todo in todos">
@@ -21,9 +28,23 @@
             </ol>
         </div>
 
+        <hr>
+
+        <!-- v-model and v-on example -->
         <p>{{ message }}</p>
         <input v-model="message">
         <button v-on:click="reverseMessage">Reverse Message</button>
+
+        <hr>
+
+        <!-- todo-item component example -->
+        <ol>
+            <todo-item
+                v-for="item in groceryList"
+                v-bind:todo="item"
+                v-bind:key="item.id">
+            </todo-item>
+        </ol>
     </div>
 
     <script type="text/javascript">
@@ -37,6 +58,11 @@
                         { text: 'Learn JavaScript' },
                         { text: 'Learn Vue' },
                         { text: 'Build something awesome' }
+                    ],
+                    groceryList: [
+                        { id: 0, text: 'Vegetables' },
+                        { id: 1, text: 'Cheese' },
+                        { id: 2, text: 'Whatever else humans are supposed to eat' }
                     ]
                 },
                 methods: {
@@ -45,6 +71,12 @@
                     }
                 }
             })
+
+        // Define a new component called todo-item
+        Vue.component('todo-item', {
+            props: ['todo'],
+            template: '<li>{{ todo.text }}</li>'
+        })
     </script>
 </body>
 </html>
