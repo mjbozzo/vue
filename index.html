@@ -45,6 +45,12 @@
                 v-bind:key="item.id">
             </todo-item>
         </ol>
+
+        <hr>
+
+        <!-- Lifecycle Diagram -->
+        <h1>Lifecycle Diagram</h1>
+        <img style="width: 100%;" src="img/lifecycle.png" />
     </div>
 
     <script type="text/javascript">
@@ -74,6 +80,22 @@
                     reverseMessage: function () {
                         this.message = this.message.split('').reverse().join('')
                     }
+                },
+                // lifecycle hook for when app is created
+                created: function () {
+                    console.log('App created - Message is: ' + this.message)
+                },
+                // lifecycle hook for when app is mounted
+                mounted: function () {
+                    console.log('App mounted - Message is: ' + this.message)
+                },
+                // lifecycle hook for when app is updated
+                updated: function () {
+                    console.log('App updated - Message is: ' + this.message)
+                },
+                // lifecycle hook for when app is destroyed
+                destroyed: function () {
+                    console.log('App destroyed - Message is: ' + this.message)
                 }
             })
 
