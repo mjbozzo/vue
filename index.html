@@ -12,6 +12,16 @@
         <p v-bind:title="hoverTitle">
             Hover your mouse over me for a few seconds to see my dynamically bound title!
         </p>
+
+        <p v-if="seen">Now you see me</p>
+
+        <div>
+            <ol>
+                <li v-for="todo in todos">
+                    {{ todo.text }}
+                </li>
+            </ol>
+        </div>
     </div>
 
     <script type="text/javascript">
@@ -19,7 +29,13 @@
                 el: '#app',
                 data: {
                     message: 'Hello Vue!',
-                    hoverTitle: 'This is the hover title!'
+                    hoverTitle: 'This is the hover title!',
+                    seen: true,
+                    todos: [
+                        { text: 'Learn JavaScript' },
+                        { text: 'Learn Vue' },
+                        { text: 'Build something awesome' }
+                    ]
                 }
             })
     </script>
