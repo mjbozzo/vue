@@ -51,6 +51,11 @@
         var app = new Vue({
                 el: '#app',
                 data: {
+                    newTodoText: '',
+                    visitCount: 0,
+                    hideCompletedTodos: false,
+                    todos: [],
+                    error: null,
                     message: 'Hello Vue!',
                     hoverTitle: 'This is the hover title!',
                     seen: true,
@@ -71,6 +76,15 @@
                     }
                 }
             })
+
+        // it will show the element associated to the app
+        console.log(app.$el)
+
+        // $watch is an instance method
+        app.$watch('message', function (newValue, oldValue) {
+            // This callback will be called when `app.message` changes
+            console.log("Message changed from '" + oldValue + "' to '" + newValue)
+        })
 
         // Define a new component called todo-item
         Vue.component('todo-item', {
