@@ -7,14 +7,19 @@
 </head>
 <body>
     <div id="app">
-      {{ message }}
+        <p>{{ message }}</p>
+
+        <p v-bind:title="hoverTitle">
+            Hover your mouse over me for a few seconds to see my dynamically bound title!
+        </p>
     </div>
 
     <script type="text/javascript">
         var app = new Vue({
                 el: '#app',
                 data: {
-                    message: 'Hello Vue!'
+                    message: 'Hello Vue!',
+                    hoverTitle: 'This is the hover title!'
                 }
             })
     </script>
