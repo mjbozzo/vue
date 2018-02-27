@@ -7,8 +7,6 @@
 </head>
 <body>
     <div id="app">
-        <p>{{ message }}</p>
-
         <p v-bind:title="hoverTitle">
             Hover your mouse over me for a few seconds to see my dynamically bound title!
         </p>
@@ -22,6 +20,10 @@
                 </li>
             </ol>
         </div>
+
+        <p>{{ message }}</p>
+        <input v-model="message">
+        <button v-on:click="reverseMessage">Reverse Message</button>
     </div>
 
     <script type="text/javascript">
@@ -36,6 +38,11 @@
                         { text: 'Learn Vue' },
                         { text: 'Build something awesome' }
                     ]
+                },
+                methods: {
+                    reverseMessage: function () {
+                        this.message = this.message.split('').reverse().join('')
+                    }
                 }
             })
     </script>
