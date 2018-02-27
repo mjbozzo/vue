@@ -4,53 +4,60 @@
         Vue Test
     </title>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
     <div id="app">
         <!-- Hover Title -->
-        <p v-bind:title="hoverTitle">
-            Hover your mouse over me for a few seconds to see my dynamically bound title!
-        </p>
-
-        <hr>
+        <section>
+            <p v-bind:title="hoverTitle">
+                Hover your mouse over me for a few seconds to see my dynamically bound title!
+            </p>
+        </section>
 
         <!-- v-if example -->
-        <p v-if="seen">Conditional text, run "app.seen = false" in the console to hide it.</p>
-
-        <hr>
+        <section>
+            <p v-if="seen">Conditional text, run "app.seen = false" in the console to hide it.</p>
+        </section>
 
         <!-- v-for example -->
-        <div>
+        <section>
             <ol>
                 <li v-for="todo in todos">
                     {{ todo.text }}
                 </li>
             </ol>
-        </div>
-
-        <hr>
+        </section>
 
         <!-- v-model and v-on example -->
-        <p>{{ message }}</p>
-        <input v-model="message">
-        <button v-on:click="reverseMessage">Reverse Message</button>
-
-        <hr>
+        <section>
+            <p>{{ message }}</p>
+            <input v-model="message">
+            <button v-on:click="reverseMessage">Reverse Message</button>
+        </section>
 
         <!-- todo-item component example -->
-        <ol>
-            <todo-item
-                v-for="item in groceryList"
-                v-bind:todo="item"
-                v-bind:key="item.id">
-            </todo-item>
-        </ol>
+        <section>
+            <ol>
+                <todo-item
+                    v-for="item in groceryList"
+                    v-bind:todo="item"
+                    v-bind:key="item.id">
+                </todo-item>
+            </ol>
+        </section>
 
-        <hr>
+        <!-- raw HTML -->
+        <section>
+            <p>Using mustaches: {{ rawHtml }}</p>
+            <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+        </section>
 
         <!-- Lifecycle Diagram -->
-        <h1>Lifecycle Diagram</h1>
-        <img style="width: 100%;" src="img/lifecycle.png" />
+        <section>
+            <h1>Lifecycle Diagram</h1>
+            <img style="width: 100%;" src="img/lifecycle.png" />
+        </section>
     </div>
 
     <script type="text/javascript">
@@ -65,6 +72,7 @@
                     message: 'Hello Vue!',
                     hoverTitle: 'This is the hover title!',
                     seen: true,
+                    rawHtml: '<span style="color: red;">This should be red.</span>',
                     todos: [
                         { text: 'Learn JavaScript' },
                         { text: 'Learn Vue' },
