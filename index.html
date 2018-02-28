@@ -57,7 +57,7 @@
             <p>Computed reversed message: "{{ reversedMessage }}"</p>
             <input v-model="message">
             <button
-                @click=""
+                @click="greet($event, 'The Reverse button does not work anymore')"
                 :disabled="isButtonDisabled">
                 Reverse Message
             </button>
@@ -93,6 +93,20 @@
         <!-- computed full Name -->
         <section>
             <span>{{ fullName }}</span>
+        </section>
+
+        <!-- event handling -->
+        <section>
+            <!-- the click event's propagation will be stopped -->
+            <a @click.stop="greet($event, message)"></a>
+
+            <!-- modifiers can be chained -->
+            <a @click.stop.prevent="greet($event, 'default behaviour prevented')">This is a link, click me</a>
+
+            <!-- only call greet when the `keyCode` is 13 -->
+            <!-- aliases: enter, tab, delete (captures both “Delete” and “Backspace” keys)
+                  esc, space, up, down, left, right -->
+            <input @keyup.13="greet($event, 'The enter key was pressed')">
         </section>
 
         <!-- Lifecycle Diagram -->
@@ -173,6 +187,12 @@
                             title: this.newTodoText
                         })
                         this.newTodoText = ''
+                    },
+                    greet: function (event, message) {
+                        alert(message);
+                        if (event) {
+                            console.log(event.target.tagName)
+                        }
                     }
                 },
                 // lifecycle hook for when app is created
