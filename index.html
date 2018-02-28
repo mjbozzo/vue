@@ -44,24 +44,6 @@
             <span>console: app.loginType = 'username', app.loginType = 'email', app.loginType = 'other'  </span>
         </section>
 
-        <!-- v-model and v-on example -->
-        <section>
-            <p style="white-space: pre-line;">Original message: "{{ message }}"</p>
-            <br>
-            <p style="white-space: pre-line;">Computed reversed message: "{{ reversedMessage }}"</p>
-            <br>
-            <!-- Interpolation on textareas (<textarea>{{text}}</textarea>) won't work. Use v-model instead. -->
-            <textarea v-model.trim="message" placeholder="add multiple lines"></textarea>
-            <button
-                @click="greet($event, 'The Reverse button does not work anymore')"
-                :disabled="isButtonDisabled">
-                Reverse Message
-            </button>
-            
-            <input type="checkbox" id="checkbox" v-model="isButtonDisabled">
-            <label for="checkbox">is Button disabled: {{ isButtonDisabled }}</label>
-        </section>
-
         <!-- todo-list example -->
         <section>
             <div id="todo-list-example">
@@ -84,6 +66,10 @@
 
         <!-- form example -->
         <section>
+            <div>
+                <input type="checkbox" id="checkbox" v-model="checked">
+                <label for="checkbox">{{ checked }}</label>
+            </div>
             <div>
                 <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
                 <label for="jack">Jack</label>
@@ -138,24 +124,7 @@
                   esc, space, up, down, left, right -->
             <input @keyup.13="greet($event, 'The enter key was pressed')">
         </section>
-
-        <!-- Lifecycle Diagram -->
-        <section>
-            <h1>Lifecycle Diagram</h1>
-            <img style="width: 100%;" src="img/lifecycle.png" />
-        </section>
     </div>
-
-    <!-- Questions app -->
-    <section>
-        <div id="watch-example">
-            <p>
-                Ask a yes/no question:
-                <input v-model="question">
-            </p>
-            <p>{{ answer }}</p>
-        </div>
-    </section>
 
     <script type="text/javascript">
         var app = new Vue({
@@ -165,6 +134,7 @@
                         firstName: 'Foo',
                         lastName: 'Bar',
                         checkedNames: [],
+                        checked: false,
                         picked: '',
                         selected: '',
                         options: [
@@ -175,7 +145,6 @@
                         visitCount: 0,
                         hideCompletedTodos: false,
                         error: null,
-                        message: 'Hello Vue!',
                         seen: true,
                         loginType: 'username',
                         isButtonDisabled: false,
@@ -191,9 +160,6 @@
                 },
                 // computed properties use caching
                 computed: {
-                    reversedMessage: function () {
-                        return this.message.split('').reverse().join('')
-                    },
                     fullName: {
                         // getter
                         get: function () {
@@ -273,8 +239,112 @@
         })
     </script>
 
+    <!-- Props events -->
+    <section>
+        <h1>Props events</h1>
+        <img style="width: 50%;text-align: center;" src="img/props-events.png" />
+
+        <div id="counter-event-example">
+            <p>{{ total }}</p>
+            <button-counter @increment="incrementTotal"></button-counter>
+            <button-counter @increment="incrementTotal"></button-counter>
+        </div>
+    </section>
+
+    <script type="text/javascript">
+        Vue.component('button-counter', {
+            template: '<button v-on:click="incrementCounter">{{ counter }}</button>',
+            data: function () {
+                return {
+                    counter: 0
+                }
+            },
+            methods: {
+                incrementCounter: function () {
+                    this.counter += 1
+                    this.$emit('increment')
+                }
+            }
+        })
+
+        new Vue({
+            el: '#counter-event-example',
+            data: {
+                total: 0
+            },
+            methods: {
+                incrementTotal: function () {
+                    this.total += 1
+                }
+            }
+        })
+    </script>
+
+    <!-- Message Event Example --> 
+    <section>
+        <div id="message-event-example" class="demo">
+            <p v-for="msg in messages">{{ msg }}</p>
+            <button-message v-on:message="handleMessage"></button-message>
+        </div>
+    </section>
+    <script type="text/javascript">
+        Vue.component('button-message', {
+            template: ` <section>
+                            <p style="white-space: pre-line;">Original message: "{{ message }}"</p>
+                            <br>
+                            <p style="white-space: pre-line;">Computed reversed message: "{{ reversedMessage }}"</p>
+                            <br>
+                            <!-- Interpolation on textareas (<textarea>{{text}}</textarea>) won't work. Use v-model instead. -->
+                            <textarea v-model.trim="message" placeholder="add multiple lines"></textarea>
+                            <button
+                                @click="handleSendMessage">
+                                Send
+                            </button>
+                        </section>`,
+            data: function () {
+                return {
+                    message: 'test message'
+                }
+            },
+            computed: {
+                reversedMessage: function () {
+                    return this.message.split('').reverse().join('')
+                }
+            },
+            methods: {
+                handleSendMessage: function () {
+                    this.$emit('message', { message: this.message })
+                }
+            }
+        })
+
+        new Vue({
+            el: '#message-event-example',
+            data: {
+                messages: []
+            },
+            methods: {
+                handleMessage: function (payload) {
+                    this.messages.push(payload.message)
+                }
+            }
+        })
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+
+    <!-- Questions app -->
+    <section>
+        <div id="watch-example">
+            <p>
+                Ask a yes/no question:
+                <input v-model="question">
+            </p>
+            <p>{{ answer }}</p>
+        </div>
+    </section>
+
     <script>
         var watchExampleVM = new Vue({
             el: '#watch-example',
@@ -316,5 +386,11 @@
             }
         })
     </script>
+
+    <!-- Lifecycle Diagram -->
+    <section>
+        <h1>Lifecycle Diagram</h1>
+        <img style="width: 100%;" src="img/lifecycle.png" />
+    </section>
 </body>
 </html>
