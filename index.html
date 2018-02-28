@@ -59,6 +59,11 @@
             <p>Using v-html directive: <span v-html="rawHtml"></span></p>
         </section>
 
+        <!-- computed full Name -->
+        <section>
+            <span>{{ fullName }}</span>
+        </section>
+
         <!-- Lifecycle Diagram -->
         <section>
             <h1>Lifecycle Diagram</h1>
@@ -70,6 +75,8 @@
         var app = new Vue({
                 el: '#app',
                 data: {
+                    firstName: 'Foo',
+                    lastName: 'Bar',
                     newTodoText: '',
                     visitCount: 0,
                     hideCompletedTodos: false,
@@ -91,9 +98,22 @@
                         { id: 2, text: 'Whatever else humans are supposed to eat' }
                     ]
                 },
+                // computed properties use caching
                 computed: {
                     reversedMessage: function () {
                         return this.message.split('').reverse().join('')
+                    },
+                    fullName: {
+                        // getter
+                        get: function () {
+                            return this.firstName + ' ' + this.lastName
+                        },
+                        // setter
+                        set: function (newValue) {
+                            var names = newValue.split(' ')
+                            this.firstName = names[0]
+                            this.lastName = names[names.length - 1]
+                        }
                     }
                 },
                 methods: {},
