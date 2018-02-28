@@ -15,14 +15,40 @@
             </p>
         </section>
 
-        <!-- v-if and v-bind:class example -->
+        <!-- v-if / v-else-if / v-else, :class, :style, v-show and template example -->
         <section>
-            <p
-                :class="classObject"
-                :style="styleObject">
-                Active
-            </p>
-            <p v-if="hasError">there was an error</p>
+            <h1 v-show="loginType">Login</h1>
+            <template v-if="loginType === 'username'">
+                <label
+                    :class="classObject"
+                    :style="styleObject">
+                    Username
+                </label>
+                <input
+                    placeholder="Enter your username"
+                    key="username-input">
+            </template>
+            <template v-else-if="loginType === 'other'">
+                <label
+                    :class="classObject"
+                    :style="styleObject">
+                    Other
+                </label>
+                <input
+                    placeholder="Enter other"
+                    key="other-input">
+            </template>
+            <template v-else>
+                <label
+                    :class="classObject"
+                    :style="styleObject">
+                    Email
+                </label>
+                <input
+                    placeholder="Enter your email address"
+                    key="email-input">
+            </template>
+            <span>console: app.loginType = 'username', app.loginType = 'email', app.loginType = 'other'  </span>
         </section>
 
         <!-- v-for example -->
@@ -101,8 +127,7 @@
                     message: 'Hello Vue!',
                     hoverTitle: 'This is the hover title!',
                     seen: true,
-                    isActive: true,
-                    hasError: false,
+                    loginType: 'username',
                     isButtonDisabled: false,
                     rawHtml: '<span style="color: red;">This should be red.</span>',
                     todos: [
