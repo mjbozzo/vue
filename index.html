@@ -8,13 +8,6 @@
 </head>
 <body>
     <div id="app">
-        <!-- Hover Title -->
-        <section>
-            <p :title="hoverTitle">
-                Hover your mouse over me for a few seconds to see my dynamically bound title!
-            </p>
-        </section>
-
         <!-- v-if / v-else-if / v-else, :class, :style, v-show and template example -->
         <section>
             <h1 v-show="loginType">Login</h1>
@@ -53,15 +46,20 @@
 
         <!-- v-model and v-on example -->
         <section>
-            <p>Original message: "{{ message }}"</p>
-            <p>Computed reversed message: "{{ reversedMessage }}"</p>
-            <input v-model="message">
+            <p style="white-space: pre-line;">Original message: "{{ message }}"</p>
+            <br>
+            <p style="white-space: pre-line;">Computed reversed message: "{{ reversedMessage }}"</p>
+            <br>
+            <!-- Interpolation on textareas (<textarea>{{text}}</textarea>) won't work. Use v-model instead. -->
+            <textarea v-model.trim="message" placeholder="add multiple lines"></textarea>
             <button
                 @click="greet($event, 'The Reverse button does not work anymore')"
                 :disabled="isButtonDisabled">
                 Reverse Message
             </button>
-            <p>run "app.isButtonDisabled = true" in the console to disable button.</p>
+            
+            <input type="checkbox" id="checkbox" v-model="isButtonDisabled">
+            <label for="checkbox">is Button disabled: {{ isButtonDisabled }}</label>
         </section>
 
         <!-- todo-list example -->
@@ -81,6 +79,38 @@
                     </todo-item>
                 </ul>
                 <p v-else>No todos left! <span v-for="n in 10">{{ n }} </span></p>
+            </div>
+        </section>
+
+        <!-- form example -->
+        <section>
+            <div>
+                <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+                <label for="jack">Jack</label>
+                <input type="checkbox" id="john" value="John" v-model="checkedNames">
+                <label for="john">John</label>
+                <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+                <label for="mike">Mike</label>
+                <br>
+                <span>Checked names: {{ checkedNames }}</span>
+            </div>
+            <div>
+                <input type="radio" id="one" value="One" v-model="picked">
+                <label for="one">One</label>
+                <br>
+                <input type="radio" id="two" value="Two" v-model="picked">
+                <label for="two">Two</label>
+                <br>
+                <span>Picked: {{ picked }}</span>
+            </div>
+            <div>
+                <select v-model="selected">
+                    <option disabled value="">Please select an option</option>
+                    <option v-for="option in options" :value="option.value">
+                        {{ option.text }}
+                    </option>
+                </select>
+                <span>Selected: {{ selected }}</span>
             </div>
         </section>
 
@@ -133,11 +163,18 @@
                 data: {
                     firstName: 'Foo',
                     lastName: 'Bar',
+                    checkedNames: [],
+                    picked: '',
+                    selected: '',
+                    options: [
+                        { text: 'One', value: 'A' },
+                        { text: 'Two', value: 'B' },
+                        { text: 'Three', value: 'C' }
+                    ],
                     visitCount: 0,
                     hideCompletedTodos: false,
                     error: null,
                     message: 'Hello Vue!',
-                    hoverTitle: 'This is the hover title!',
                     seen: true,
                     loginType: 'username',
                     isButtonDisabled: false,
