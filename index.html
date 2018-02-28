@@ -51,15 +51,6 @@
             <span>console: app.loginType = 'username', app.loginType = 'email', app.loginType = 'other'  </span>
         </section>
 
-        <!-- v-for example -->
-        <section>
-            <ol>
-                <li v-for="todo in todos">
-                    {{ todo.text }}
-                </li>
-            </ol>
-        </section>
-
         <!-- v-model and v-on example -->
         <section>
             <p>Original message: "{{ message }}"</p>
@@ -73,15 +64,24 @@
             <p>run "app.isButtonDisabled = true" in the console to disable button.</p>
         </section>
 
-        <!-- todo-item component example -->
+        <!-- todo-list example -->
         <section>
-            <ol>
-                <todo-item
-                    v-for="item in groceryList"
-                    :todo="item"
-                    :key="item.id">
-                </todo-item>
-            </ol>
+            <div id="todo-list-example">
+                <input
+                    v-model="newTodoText"
+                    v-on:keyup.enter="addNewTodo"
+                    placeholder="Add a todo" />
+                <ul v-if="todos.length">
+                    <todo-item
+                        v-for="(todo, index) in todos"
+                        v-if="!todo.isComplete"
+                        :key="todo.id"
+                        :title="todo.title"
+                        @remove="todos.splice(index, 1)">
+                    </todo-item>
+                </ul>
+                <p v-else>No todos left! <span v-for="n in 10">{{ n }} </span></p>
+            </div>
         </section>
 
         <!-- raw HTML -->
@@ -119,10 +119,8 @@
                 data: {
                     firstName: 'Foo',
                     lastName: 'Bar',
-                    newTodoText: '',
                     visitCount: 0,
                     hideCompletedTodos: false,
-                    todos: [],
                     error: null,
                     message: 'Hello Vue!',
                     hoverTitle: 'This is the hover title!',
@@ -130,16 +128,13 @@
                     loginType: 'username',
                     isButtonDisabled: false,
                     rawHtml: '<span style="color: red;">This should be red.</span>',
+                    newTodoText: '',
                     todos: [
-                        { text: 'Learn JavaScript' },
-                        { text: 'Learn Vue' },
-                        { text: 'Build something awesome' }
+                        { id: 1, title: 'Learn JavaScript', isComplete: true },
+                        { id: 2, title: 'Learn Vue', isComplete: false },
+                        { id: 3, title: 'Build something awesome', isComplete: true }
                     ],
-                    groceryList: [
-                        { id: 0, text: 'Vegetables' },
-                        { id: 1, text: 'Cheese' },
-                        { id: 2, text: 'Whatever else humans are supposed to eat' }
-                    ]
+                    nextTodoId: 4
                 },
                 // computed properties use caching
                 computed: {
@@ -171,7 +166,15 @@
                         }
                     }
                 },
-                methods: {},
+                methods: {
+                    addNewTodo: function () {
+                        this.todos.push({
+                            id: this.nextTodoId++,
+                            title: this.newTodoText
+                        })
+                        this.newTodoText = ''
+                    }
+                },
                 // lifecycle hook for when app is created
                 created: function () {
                     console.log('App created - Message is: ' + this.message)
@@ -201,8 +204,13 @@
 
         // Define a new component called todo-item
         Vue.component('todo-item', {
-            props: ['todo'],
-            template: '<li>{{ todo.text }}</li>'
+            props: ['title'],
+            template: '\
+                <li>\
+                    {{ title }}\
+                    <button @click="$emit(\'remove\')">X</button>\
+                </li>\
+            '
         })
     </script>
 
