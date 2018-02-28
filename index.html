@@ -15,9 +15,14 @@
             </p>
         </section>
 
-        <!-- v-if example -->
+        <!-- v-if and v-bind:class example -->
         <section>
-            <p v-if="seen">Conditional text, run "app.seen = false" in the console to hide it.</p>
+            <p
+                :class="classObject"
+                :style="styleObject">
+                Active
+            </p>
+            <p v-if="hasError">there was an error</p>
         </section>
 
         <!-- v-for example -->
@@ -96,6 +101,8 @@
                     message: 'Hello Vue!',
                     hoverTitle: 'This is the hover title!',
                     seen: true,
+                    isActive: true,
+                    hasError: false,
                     isButtonDisabled: false,
                     rawHtml: '<span style="color: red;">This should be red.</span>',
                     todos: [
@@ -124,6 +131,18 @@
                             var names = newValue.split(' ')
                             this.firstName = names[0]
                             this.lastName = names[names.length - 1]
+                        }
+                    },
+                    classObject: function () {
+                        return {
+                            active: this.isActive && !this.error,
+                            'text-danger': this.error && this.error.type === 'fatal'
+                        }
+                    },
+                    styleObject: function () {
+                        return {
+                            color: 'red',
+                            fontSize: '13px'
                         }
                     }
                 },
